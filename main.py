@@ -1,22 +1,30 @@
-from enum import Enum
-from fastapi import FastAPI
-
-
-class ModelName(str, Enum):
-    alexnet = "alexnet"
-    resnet = "resnet"
-    lenet = "lenet"
-
+import models
+from fastapi import FastAPI, Request
+from fastapi.templating import Jinja2Templates
+from database import SessionLocal, engine
+from sqlalchemy.orm import Session
 
 app = FastAPI()
+models.Base.metadata.create_all(bind=engine)
+templates = Jinja2Templates(directory="templates")
 
 
-@app.get("/model/{model_name}")
-async def get_model(model_name: ModelName):
-    if model_name == ModelName.alexnet:
-        return {"model_name": model_name, "message": "Deep Learning FTW!"}
-    if model_name == 'lenet':
-        return {"model_name": model_name, "message": "LeCuNN all the images"}
-   
-    return {"model_name": model_name, "message": "Have some residuals"}
+@app.get("/")
+def home(request: Request):
+    return templates.TemplateResponse("home.html", {
+        "request": request,
+    })
+
+
+@app.post("/stock")
+def create_stock():
+    return{
+        "code": "success",
+        "message": "stock created"
+    }
+
+
+
+
+
 
