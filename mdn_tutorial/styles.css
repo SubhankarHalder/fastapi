@@ -1,0 +1,19 @@
+h1 {
+    color: red;
+}
+
+p {
+    color: green;
+}
+
+h1 + p {
+    font-size: 200%;
+  }
+
+a:link {
+color: pink;
+}
+
+a:visited {
+color: green;
+}
